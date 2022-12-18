@@ -47,6 +47,10 @@ public class GameView {
     private Buttons againbtn;
     private Label bomb;
     private int bombCount;
+    private int win;
+    private int winCount;
+    private boolean menang;
+
     
     public GameView(Stage home, int size) {
         TILE_SIZE = size;
@@ -72,7 +76,44 @@ public class GameView {
 		root.getChildren().add(backbtn);
 		root.getChildren().add(againbtn);
 	}
-    
+    private void isWin() {
+        // TODO Auto-generated method stub
+
+        if (win == winCount) {
+            labelInfo winText = new labelInfo("YOU WIN");
+            winText.setLayoutX(W + 35);
+            winText.setLayoutY(430);
+            root.getChildren().add(winText);
+            menang = true;
+            stopGame();
+
+            for (int y = 0; y < Y_TILES; y++) {
+                for (int x = 0; x < X_TILES; x++) {
+                    grid[x][y].setOnMouseClicked(null);
+                    ;
+                }
+            }
+        }
+
+    }
+
+    private void stopGame() {
+        // TODO Auto-generated method stub
+        timer.cancel();
+        if (menang) {
+            try {
+                setScore();
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else {
+            showBomb();
+        }
+
+        backbtn.setVisible(true);
+        againbtn.setVisible(true);
+    }
     public Stage getMainStage() {
 		return mainStage;
 	}
@@ -140,8 +181,10 @@ public class GameView {
     }
     
     private Parent createContent() {  
+    	win = 0;
+        winCount = 0;
         bombCount = 0;
-    	
+        menang = false;
     	root = new AnchorPane();
         root.setPrefSize(W+200, H);
 
@@ -228,6 +271,9 @@ public class GameView {
             if(this.hasBomb) {
             	bombCount++;
             }
+	    else{
+		 win++;
+	    }
 
             text.setFont(Font.font(18));
             text.setText(hasBomb ? "X" : "");
@@ -261,12 +307,10 @@ public class GameView {
                 return;
 
             if (hasBomb) {//melakukan reset game
-               System.out.println("Game Over");
-               timer.cancel();
-               showBomb();
-               backbtn.setVisible(true);
-               againbtn.setVisible(true);
-               return;
+                System.out.println("Game Over");
+                menang = false;
+                stopGame();
+                return;
             }
 
             isOpen = true;
@@ -281,6 +325,8 @@ public class GameView {
                 else if(Integer.valueOf(text.getText()) == 7) imgTile.setImage(card.get(7));
                 else if(Integer.valueOf(text.getText()) == 8) imgTile.setImage(card.get(8));
             }
+	    winCount++;
+            isWin();
             if (text.getText().isEmpty()) {//untuk membuka sekitarnya jika kosong isinya
                 getNeighbors(this).forEach(Tile::open);
             }
@@ -328,5 +374,14 @@ public class GameView {
             	grid[x][y].isbomb();
             }
         }
+    }
+    private void setScore() throws FileNotFoundException {
+        // TODO Auto-generated method stub
+        
+        Label textToSet = new Label("SCORE : " + String.valueOf(df.format(time)));
+        textToSet.setPrefWidth(170);
+        textToSet.setLayoutX(W + 100);
+        textToSet.setLayoutY(200);
+        root.getChildren().add(textToSet);
     }
 }
