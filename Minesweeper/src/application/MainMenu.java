@@ -39,7 +39,7 @@ public class MainMenu {
 
             @Override
             public void handle(ActionEvent event) {
-                new GameView(stage);
+                new GameView(stage, size);
             }
 
         });

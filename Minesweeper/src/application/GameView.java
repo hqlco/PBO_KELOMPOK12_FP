@@ -16,17 +16,22 @@ import javafx.stage.Stage;
 
 public class GameView {
 
-    private static final int TILE_SIZE = 100;
+	private static int TILE_SIZE;
     private static final int W = 800;
     private static final int H = 600;
     private Stage mainStage;
-    private static final int X_TILES = W / TILE_SIZE;
-    private static final int Y_TILES = H / TILE_SIZE;
+    private static int X_TILES;
+    private static int Y_TILES;
     private Scene scene;
     private Pane root;
     private Stage MainMenu;
-    private Tile[][] grid = new Tile[X_TILES][Y_TILES];
-    public GameView(Stage menu) {
+    private Tile[][] grid;
+    
+    public GameView(Stage menu, int size) {
+        TILE_SIZE = size;
+        X_TILES = W / TILE_SIZE;
+        Y_TILES = H / TILE_SIZE;
+        grid = new Tile[X_TILES][Y_TILES];
     	root = new Pane();
     	scene = new Scene(root);
     	mainStage = new Stage();
@@ -135,6 +140,8 @@ public class GameView {
             if (hasBomb) {//melakukan reset game
                System.out.println("Game Over");
                scene.setRoot(createContent());
+               MainMenu.show();
+               mainStage.close();
                return;
             }
 
