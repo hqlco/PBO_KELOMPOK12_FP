@@ -8,7 +8,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			MainMenu main= new MainMenu();
+			Home main = new Home();
 			primaryStage = main.getMainStage();
 			primaryStage.setTitle("MINESWEEPER");
 			primaryStage.show();
