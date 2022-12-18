@@ -45,6 +45,8 @@ public class GameView {
 	private static final DecimalFormat df = new DecimalFormat("0.00");
     private Buttons backbtn;
     private Buttons againbtn;
+    private Label bomb;
+    private int bombCount;
     
     public GameView(Stage home, int size) {
         TILE_SIZE = size;
@@ -137,7 +139,9 @@ public class GameView {
         }
     }
     
-    private Parent createContent() {    	
+    private Parent createContent() {  
+        bombCount = 0;
+    	
     	root = new AnchorPane();
         root.setPrefSize(W+200, H);
 
@@ -165,7 +169,10 @@ public class GameView {
         }
         
         root.getChildren().add(timeCounter(W+100, 100));
-    	
+        bomb = new Label(String.valueOf(bombCount));
+    	bomb.setLayoutX(W+100);
+    	bomb.setLayoutY(150);
+    	root.getChildren().add(bomb);
     	createButtons();
 
         return root;
@@ -209,13 +216,18 @@ public class GameView {
         private int x, y;
         private boolean hasBomb;
         private boolean isOpen = false;
-	private ImageView imgTile= new ImageView(card.get(10));
+        private boolean isFlag = false;
+        private ImageView imgTile= new ImageView(card.get(10));
         private Text text = new Text();
 
         public Tile(int x, int y, boolean hasBomb) {
             this.x = x;
             this.y = y;
             this.hasBomb = hasBomb;
+            
+            if(this.hasBomb) {
+            	bombCount++;
+            }
 
             text.setFont(Font.font(18));
             text.setText(hasBomb ? "X" : "");
@@ -227,7 +239,14 @@ public class GameView {
             setTranslateX(x * TILE_SIZE);
             setTranslateY(y * TILE_SIZE);
 
-            setOnMouseClicked(e -> open());
+            setOnMouseClicked(e -> {
+                if(e.getButton()==MouseButton.PRIMARY) {
+                	open();
+                }else if(e.getButton()==MouseButton.SECONDARY) {
+                	putFlag();
+                }
+        	
+            });
         }
         
         public void isbomb() {
@@ -266,6 +285,40 @@ public class GameView {
                 getNeighbors(this).forEach(Tile::open);
             }
         }
+        
+        private void putFlag() {
+        	if(isFlag) {
+        		isFlag = false;
+            	bombCount++;
+    			bomb.setText(String.valueOf(bombCount));
+				imgTile.setImage(card.get(10));
+            	setOnMouseClicked(e -> {
+            		if(e.getButton()==MouseButton.PRIMARY) {
+ 	                	open();
+ 	                }else if(e.getButton()==MouseButton.SECONDARY) {
+ 	                	putFlag();
+ 	                }
+             	
+            	});
+            	
+        	}
+        	else {
+        		if(bombCount > 0) {
+        			isFlag = true;
+        			bombCount--;
+					bomb.setText(String.valueOf(bombCount));
+					imgTile.setImage(card.get(11));
+        			setOnMouseClicked(e -> {
+     	                if(e.getButton()==MouseButton.PRIMARY) {
+     	                	e.consume();
+     	                }else if(e.getButton()==MouseButton.SECONDARY) {
+     	                	putFlag();
+     	                }
+                 	
+        			});
+        		}
+        	}
+    	}
     }
     
     private void showBomb() {
