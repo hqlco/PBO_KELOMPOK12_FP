@@ -198,7 +198,7 @@ public class GameView {
 
         for (int y = 0; y < Y_TILES; y++) {//membuat isi angka
             for (int x = 0; x < X_TILES; x++) {
-                Tile tile = new Tile(x, y, Math.random() < 0.0);
+                Tile tile = new Tile(x, y, Math.random() < 0.125);
 
                 grid[x][y] = tile;
                 root.getChildren().add(tile);
