@@ -27,6 +27,10 @@ public class GameView {
     private Stage MainMenu;
     private Tile[][] grid;
     
+    private double time;
+	Timer timer;
+	private static final DecimalFormat df = new DecimalFormat("0.00");
+    
     public GameView(Stage menu, int size) {
         TILE_SIZE = size;
         X_TILES = W / TILE_SIZE;
@@ -44,6 +48,29 @@ public class GameView {
     public Stage getMainStage() {
 		return mainStage;
 	}
+    
+    private Label timeCounter(int x, int y) {
+    	time = 0.0;
+    	Labels counter = new Labels(String.valueOf(df.format(time)));
+    	counter.setLayoutX(x);
+    	counter.setLayoutY(y);
+    	
+		timer = new Timer();
+    	timer.schedule(new TimerTask() {
+			  @Override
+			  public void run() {
+			    time+=0.01;
+			    Platform.runLater(new Runnable(){
+					@Override
+					public void run() {
+						counter.setText(String.valueOf(df.format(time)));
+					}
+			    });
+			  }
+			}, 0, 10);
+    	return counter;
+    }
+    
     private Parent createContent() {
         root.setPrefSize(W+200, H);
 
@@ -69,6 +96,8 @@ public class GameView {
                     tile.text.setText(String.valueOf(bombs));
             }
         }
+        
+        root.getChildren().add(timeCounter(W+100, 100));
 
         return root;
     }
@@ -140,6 +169,7 @@ public class GameView {
             if (hasBomb) {//melakukan reset game
                System.out.println("Game Over");
                scene.setRoot(createContent());
+               timer.cancel();
                MainMenu.show();
                mainStage.close();
                return;
