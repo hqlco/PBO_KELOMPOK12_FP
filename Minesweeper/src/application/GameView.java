@@ -13,6 +13,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.scene.control.Label;
+
 
 public class GameView {
 
