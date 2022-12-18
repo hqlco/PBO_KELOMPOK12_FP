@@ -59,7 +59,7 @@ Permainan ini dilakukan dengan cara membuka kotak pada grid, umumnya dengan mela
 
 ### Tampilan saat kalah
 
-![Screenshot 2022-12-18 112630](https://user-images.githubusercontent.com/86828535/208280984-4e85d1cf-90d5-4a23-8eff-cbf41fe3ed54.png)
+![WhatsApp Image 2022-12-18 at 19 17 35](https://user-images.githubusercontent.com/98505313/208297969-727fd5ab-7a2f-45d0-9b5b-462def219c9f.jpeg)
 
 ### Tampilan saat menang
 
