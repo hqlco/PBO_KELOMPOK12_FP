@@ -66,7 +66,9 @@ Permainan ini dilakukan dengan cara membuka kotak pada grid, umumnya dengan mela
 ![Screenshot 2022-12-18 113823](https://user-images.githubusercontent.com/86828535/208281516-ec50028f-1463-4417-92f5-bb57ae64d888.png)
 
 
+## Perbandingan Commit
 
+![Screenshot 2022-12-18 194301](https://user-images.githubusercontent.com/86828535/208298618-5c0e5228-23df-482a-8f21-37e18d943b0b.png)
 
 
 
