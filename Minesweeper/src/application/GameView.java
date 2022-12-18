@@ -21,6 +21,11 @@ import javafx.scene.control.Label;
 import javafx.application.Platform;
 import asset.Labels;
 import java.text.DecimalFormat;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import asset.Buttons;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.AnchorPane;
 
 public class GameView {
 
@@ -31,30 +36,41 @@ public class GameView {
     private static int X_TILES;
     private static int Y_TILES;
     private Scene scene;
-    private Pane root;
+    private AnchorPane root;
     private Stage home;
     private Tile[][] grid;
     List<Image> card = new ArrayList<>();
     private double time;
 	Timer timer;
 	private static final DecimalFormat df = new DecimalFormat("0.00");
+    private Buttons backbtn;
+    private Buttons againbtn;
     
     public GameView(Stage home, int size) {
         TILE_SIZE = size;
-	createImage();
+        createImage();
         X_TILES = W / TILE_SIZE;
         Y_TILES = H / TILE_SIZE;
         grid = new Tile[X_TILES][Y_TILES];
-    	root = new Pane();
+
+    	createContent();
     	scene = new Scene(root);
     	mainStage = new Stage();
     	mainStage.setScene(scene);
 	    
-        this.home =home;
+        this.home = home;
         this.home.hide();
+        
         mainStage.show();
-    	createContent();
     }
+    
+    private void createButtons() {
+    	backbtn = backButton(W+100, 250);
+		againbtn = againButton(W+100, 300);
+		root.getChildren().add(backbtn);
+		root.getChildren().add(againbtn);
+	}
+    
     public Stage getMainStage() {
 		return mainStage;
 	}
@@ -80,18 +96,54 @@ public class GameView {
 			}, 0, 10);
     	return counter;
     }
+    
+    private Buttons backButton(int x, int y) {
+    	Buttons back = new Buttons("HOME");
+    	back.setLayoutX(x);
+    	back.setLayoutY(y);
+    	back.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				mainStage.close();
+				home.show();
+			}
+			
+		});
+    	back.setVisible(false);
+    	return back;
+    }
+    
+    private Buttons againButton(int x, int y) {
+    	Buttons back = new Buttons("PLAY AGAIN");
+    	back.setLayoutX(x);
+    	back.setLayoutY(y);
+    	back.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				scene.setRoot(createContent());
+			}
+			
+		});
+    	back.setVisible(false);
+    	return back;
+    }
+    
     private void createImage() {
     	for(int i = 0; i < 13; i++)
         {
             card.add(new Image("/resource/"+i+".png"));
         }
     }
-    private Parent createContent() {
+    
+    private Parent createContent() {    	
+    	root = new AnchorPane();
         root.setPrefSize(W+200, H);
 
         for (int y = 0; y < Y_TILES; y++) {//membuat isi angka
             for (int x = 0; x < X_TILES; x++) {
-                Tile tile = new Tile(x, y, Math.random() < 0.2);
+                Tile tile = new Tile(x, y, Math.random() < 0.125);
 
                 grid[x][y] = tile;
                 root.getChildren().add(tile);
@@ -113,6 +165,8 @@ public class GameView {
         }
         
         root.getChildren().add(timeCounter(W+100, 100));
+    	
+    	createButtons();
 
         return root;
     }
@@ -150,6 +204,7 @@ public class GameView {
 
         return neighbors;
     }
+    
     private class Tile extends StackPane {//kelas untuk emngatur kotak
         private int x, y;
         private boolean hasBomb;
@@ -165,7 +220,7 @@ public class GameView {
             text.setFont(Font.font(18));
             text.setText(hasBomb ? "X" : "");
             text.setVisible(false);
-	    imgTile.setFitHeight(TILE_SIZE);
+            imgTile.setFitHeight(TILE_SIZE);
             imgTile.setFitWidth(TILE_SIZE);
             getChildren().addAll(imgTile, text);
 	
@@ -173,6 +228,16 @@ public class GameView {
             setTranslateY(y * TILE_SIZE);
 
             setOnMouseClicked(e -> open());
+        }
+        
+        public void isbomb() {
+        	if (hasBomb) {        		
+        		imgTile.setImage(card.get(9));
+        	}
+        	else if(isFlag) {
+        		imgTile.setImage(card.get(12));
+        	}
+        	setOnMouseClicked(null);
         }
 
         public void open() {
@@ -183,8 +248,9 @@ public class GameView {
                System.out.println("Game Over");
                scene.setRoot(createContent());
                timer.cancel();
-               home.show();
-               mainStage.close();
+               showBomb();
+               backbtn.setVisible(true);
+               againbtn.setVisible(true);
                return;
             }
 
@@ -202,6 +268,15 @@ public class GameView {
             }
             if (text.getText().isEmpty()) {//untuk membuka sekitarnya jika kosong isinya
                 getNeighbors(this).forEach(Tile::open);
+            }
+        }
+    }
+    
+    private void showBomb() {
+
+        for (int y = 0; y < Y_TILES; y++) {
+            for (int x = 0; x < X_TILES; x++) {
+            	grid[x][y].isbomb();
             }
         }
     }
