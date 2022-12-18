@@ -82,13 +82,14 @@ public class Home {
 		label Judul = new label("HIGH SCORE");
 		Judul.setLayoutX(110);
 		Judul.setLayoutY(25);
-		easyHS.setLayoutX(100);
+
+		easyHS.setLayoutX(MENU_SCORE_START_X);
 		easyHS.setLayoutY(100);
 
-		mediumHS.setLayoutX(200);
+		mediumHS.setLayoutX(MENU_SCORE_START_X + 100);
 		mediumHS.setLayoutY(100);
 
-		hardHS.setLayoutX(300);
+		hardHS.setLayoutX(MENU_SCORE_START_X + 200);
 		hardHS.setLayoutY(100);
 
 		scoreSubscene.getPane().getChildren().add(easyHS);
