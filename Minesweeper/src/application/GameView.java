@@ -48,7 +48,7 @@ public class GameView {
 	private static final DecimalFormat df = new DecimalFormat("0.00");
     private Buttons backbtn;
     private Buttons againbtn;
-    private Label bomb;
+    private Labels bomb;
     private int bombCount;
     private int win;
     private int winCount;
@@ -78,10 +78,10 @@ public class GameView {
     }
     
     private void createButtons() {
-    	backbtn = backButton(W+100, 250);
-		againbtn = againButton(W+100, 300);
-		root.getChildren().add(backbtn);
-		root.getChildren().add(againbtn);
+	 backbtn = backButton(W + 3, 300);
+         againbtn = againButton(W + 3, 350);
+	 root.getChildren().add(backbtn);
+	 root.getChildren().add(againbtn);
 	}
     private void isWin() {
         // TODO Auto-generated method stub
@@ -219,11 +219,20 @@ public class GameView {
             }
         }
         
-        root.getChildren().add(timeCounter(W+100, 100));
-        bomb = new Label(String.valueOf(bombCount));
-    	bomb.setLayoutX(W+100);
-    	bomb.setLayoutY(150);
-    	root.getChildren().add(bomb);
+        labelInfo waktu = new labelInfo("TIME");
+        labelInfo flag = new labelInfo("FLAG");
+        root.getChildren().add(timeCounter(W + 35, 100));
+        waktu.setLayoutX(W + 35);
+        waktu.setLayoutY(60);
+        flag.setLayoutX(W + 35);
+        flag.setLayoutY(160);
+        bomb = new labels(String.valueOf(bombCount));
+        bomb.setLayoutX(W + 35);
+        bomb.setLayoutY(200);
+        root.getChildren().add(bomb);
+        root.getChildren().add(flag);
+        root.getChildren().add(waktu);
+
     	createButtons();
 
         return root;
@@ -306,7 +315,9 @@ public class GameView {
         public void isbomb() {
         	if (hasBomb) {        		
         		imgTile.setImage(card.get(9));
-        	}
+        	}else if (isFlag) {
+                imgTile.setImage(card.get(12));
+            	}
         	setOnMouseClicked(null);
         }
 
@@ -408,10 +419,10 @@ public class GameView {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        Label textToSet = new Label("SCORE : " + String.valueOf(df.format(time)));
+        labelInfo textToSet = new labelInfo("SCORE : " + String.valueOf(df.format(time)));
         textToSet.setPrefWidth(170);
-        textToSet.setLayoutX(W + 100);
-        textToSet.setLayoutY(200);
+        textToSet.setLayoutX(W + 15);
+        textToSet.setLayoutY(480);
         root.getChildren().add(textToSet);
         scan.close();
     }
