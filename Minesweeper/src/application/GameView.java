@@ -24,12 +24,16 @@ public class GameView {
     private static final int Y_TILES = H / TILE_SIZE;
     private Scene scene;
     private Pane root;
+    private Stage MainMenu;
     private Tile[][] grid = new Tile[X_TILES][Y_TILES];
-    public GameView() {
+    public GameView(Stage menu) {
     	root = new Pane();
     	scene = new Scene(root);
     	mainStage = new Stage();
     	mainStage.setScene(scene);
+        this.MainMenu = menu;
+        MainMenu.hide();
+        mainStage.show();
     	createContent();
     }
     public Stage getMainStage() {

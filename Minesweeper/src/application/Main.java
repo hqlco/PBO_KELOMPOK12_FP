@@ -8,18 +8,18 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			GameView main = new GameView();
-	        primaryStage = main.getMainStage();
-	        primaryStage.setTitle("MINESWEEPER");
-	        primaryStage.show();
+			MainMenu main= new MainMenu();
+			primaryStage = main.getMainStage();
+			primaryStage.setTitle("MINESWEEPER");
+			primaryStage.show();
 		} catch (Exception e) {
 //			 TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-       
-    }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
