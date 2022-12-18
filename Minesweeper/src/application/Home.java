@@ -217,7 +217,7 @@ public class Home {
 
 		try {
 		    textToSet = "EASY\n";
-		    scan = new Scanner(new File("./src/resource/easyHS.txt"));
+		    scan = new Scanner(new File("./Minesweeper/src/resource/easyHS.txt"));
 		    while (scan.hasNextLine()) {
 			textToSet += scan.nextLine() + "\n";
 		    }
@@ -226,7 +226,7 @@ public class Home {
 		    scan.close();
 
 		    textToSet = "MEDIUM\n";
-		    scan = new Scanner(new File("./src/resource/mediumHS.txt"));
+		    scan = new Scanner(new File("./Minesweeper/src/resource/mediumHS.txt"));
 		    while (scan.hasNextLine()) {
 			textToSet += scan.nextLine() + "\n";
 		    }
@@ -235,7 +235,7 @@ public class Home {
 		    scan.close();
 
 		    textToSet = "HARD\n";
-		    scan = new Scanner(new File("./src/resource/hardHS.txt"));
+		    scan = new Scanner(new File("./Minesweeper/src/resource/hardHS.txt"));
 		    while (scan.hasNextLine()) {
 			textToSet += scan.nextLine() + "\n";
 		    }
