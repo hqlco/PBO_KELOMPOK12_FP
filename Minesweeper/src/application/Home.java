@@ -96,7 +96,7 @@ public class Home {
 
 			@Override
 			public void handle(ActionEvent event) {
-				new GameView(homeStage, size, label.toLowerCase());
+				new GameView(homeStage, size);
 				startSubscene.moveSubScene();
 			}
 			
