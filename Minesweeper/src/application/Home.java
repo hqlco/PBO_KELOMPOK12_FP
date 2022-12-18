@@ -18,7 +18,7 @@ public class Home {
 	private AnchorPane homePane;
 	private Scene homeScene;
 	private Stage homeStage;
-	private static final int HEIGHT = 800;
+	private static final int HEIGHT = 640;
 	private static final int WIDTH = 600;
 	List<Buttons> menuButtons;
 	private final static int MENU_BUTTON_START_X = 205;
@@ -70,6 +70,7 @@ public class Home {
 		Judul.setLayoutX(110);
 		Judul.setLayoutY(25);
 		scoreSubscene.getPane().getChildren().add(Judul);
+		scoreSubscene.getPane().getChildren().add(creatBackButton(scoreSubscene));
 	}
 	
 	private Buttons creatBackButton(msSubscene subScene) {
