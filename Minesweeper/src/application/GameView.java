@@ -32,14 +32,14 @@ public class GameView {
     private static int Y_TILES;
     private Scene scene;
     private Pane root;
-    private Stage MainMenu;
+    private Stage home;
     private Tile[][] grid;
     List<Image> card = new ArrayList<>();
     private double time;
 	Timer timer;
 	private static final DecimalFormat df = new DecimalFormat("0.00");
     
-    public GameView(Stage menu, int size) {
+    public GameView(Stage home, int size) {
         TILE_SIZE = size;
 	createImage();
         X_TILES = W / TILE_SIZE;
@@ -49,8 +49,9 @@ public class GameView {
     	scene = new Scene(root);
     	mainStage = new Stage();
     	mainStage.setScene(scene);
-        this.MainMenu = menu;
-        MainMenu.hide();
+	    
+        this.home =home;
+        this.home.hide();
         mainStage.show();
     	createContent();
     }
@@ -182,7 +183,7 @@ public class GameView {
                System.out.println("Game Over");
                scene.setRoot(createContent());
                timer.cancel();
-               MainMenu.show();
+               home.show();
                mainStage.close();
                return;
             }
