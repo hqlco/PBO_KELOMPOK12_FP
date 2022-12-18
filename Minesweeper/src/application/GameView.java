@@ -88,7 +88,7 @@ public class GameView {
         // TODO Auto-generated method stub
 
         if (win == winCount) {
-            Label winText = new Label("YOU WIN");
+            labelInfo winText = new labelInfo("YOU WIN");
             winText.setLayoutX(W + 35);
             winText.setLayoutY(430);
             root.getChildren().add(winText);
