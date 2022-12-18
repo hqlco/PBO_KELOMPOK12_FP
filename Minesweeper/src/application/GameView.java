@@ -13,6 +13,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.scene.control.Label;
@@ -32,13 +34,14 @@ public class GameView {
     private Pane root;
     private Stage MainMenu;
     private Tile[][] grid;
-    
+    List<Image> card = new ArrayList<>();
     private double time;
 	Timer timer;
 	private static final DecimalFormat df = new DecimalFormat("0.00");
     
     public GameView(Stage menu, int size) {
         TILE_SIZE = size;
+	createImage()
         X_TILES = W / TILE_SIZE;
         Y_TILES = H / TILE_SIZE;
         grid = new Tile[X_TILES][Y_TILES];
@@ -76,7 +79,12 @@ public class GameView {
 			}, 0, 10);
     	return counter;
     }
-    
+    private void createImage() {
+    	for(int i = 0; i < 13; i++)
+        {
+            card.add(new Image("/resource/"+i+".png"));
+        }
+    }
     private Parent createContent() {
         root.setPrefSize(W+200, H);
 
@@ -145,8 +153,7 @@ public class GameView {
         private int x, y;
         private boolean hasBomb;
         private boolean isOpen = false;
-
-        private Rectangle border = new Rectangle(TILE_SIZE - 2, TILE_SIZE - 2);
+	private ImageView imgTile= new ImageView(card.get(10));
         private Text text = new Text();
 
         public Tile(int x, int y, boolean hasBomb) {
@@ -159,9 +166,10 @@ public class GameView {
             text.setFont(Font.font(18));
             text.setText(hasBomb ? "X" : "");
             text.setVisible(false);
-
-            getChildren().addAll(border, text);
-
+	    imgTile.setFitHeight(TILE_SIZE);
+            imgTile.setFitWidth(TILE_SIZE);
+            getChildren().addAll(imgTile, text);
+	
             setTranslateX(x * TILE_SIZE);
             setTranslateY(y * TILE_SIZE);
 
@@ -182,9 +190,17 @@ public class GameView {
             }
 
             isOpen = true;
-            text.setVisible(true);
-            border.setFill(null);
-
+            imgTile.setImage(card.get(0));
+	    if(!text.getText().isEmpty()) {
+            	if(Integer.valueOf(text.getText()) == 1) imgTile.setImage(card.get(1));
+                else if(Integer.valueOf(text.getText()) == 2) imgTile.setImage(card.get(2));
+                else if(Integer.valueOf(text.getText()) == 3) imgTile.setImage(card.get(3));
+                else if(Integer.valueOf(text.getText()) == 4) imgTile.setImage(card.get(4));
+                else if(Integer.valueOf(text.getText()) == 5) imgTile.setImage(card.get(5));
+                else if(Integer.valueOf(text.getText()) == 6) imgTile.setImage(card.get(6));
+                else if(Integer.valueOf(text.getText()) == 7) imgTile.setImage(card.get(7));
+                else if(Integer.valueOf(text.getText()) == 8) imgTile.setImage(card.get(8));
+            }
             if (text.getText().isEmpty()) {//untuk membuka sekitarnya jika kosong isinya
                 getNeighbors(this).forEach(Tile::open);
             }
