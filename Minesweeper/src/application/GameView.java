@@ -243,7 +243,6 @@ public class GameView {
 
             if (hasBomb) {//melakukan reset game
                System.out.println("Game Over");
-               scene.setRoot(createContent());
                timer.cancel();
                showBomb();
                backbtn.setVisible(true);
