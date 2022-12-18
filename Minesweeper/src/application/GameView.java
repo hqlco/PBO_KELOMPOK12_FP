@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
 import asset.Buttons;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import asset.labelInfo;
 
 public class GameView {
 
