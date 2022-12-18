@@ -18,7 +18,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
 import javafx.application.Platform;
 import asset.Labels;
+
 import java.text.DecimalFormat;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import asset.Buttons;
@@ -45,8 +47,8 @@ public class GameView {
     List<Double> EZhs = new ArrayList<>();
 
     private double time;
-	Timer timer;
-	private static final DecimalFormat df = new DecimalFormat("0.00");
+    Timer timer;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
     private Buttons backbtn;
     private Buttons againbtn;
     private Labels bomb;
@@ -58,7 +60,7 @@ public class GameView {
     Scanner scan;
     BufferedWriter info;
 
-    
+
     public GameView(Stage home, int size, String dif) {
         this.dif = this.dif + dif + "HS.txt";
         TILE_SIZE = size;
@@ -67,23 +69,24 @@ public class GameView {
         Y_TILES = H / TILE_SIZE;
         grid = new Tile[X_TILES][Y_TILES];
 
-    	createContent();
-    	scene = new Scene(root);
-    	mainStage = new Stage();
-    	mainStage.setScene(scene);
-	    
+        createContent();
+        scene = new Scene(root);
+        mainStage = new Stage();
+        mainStage.setScene(scene);
+
         this.home = home;
         this.home.hide();
-        
+
         mainStage.show();
     }
-    
+
     private void createButtons() {
-	 backbtn = backButton(W + 3, 300);
-         againbtn = againButton(W + 3, 350);
-	 root.getChildren().add(backbtn);
-	 root.getChildren().add(againbtn);
-	}
+        backbtn = backButton(W + 3, 300);
+        againbtn = againButton(W + 3, 350);
+        root.getChildren().add(backbtn);
+        root.getChildren().add(againbtn);
+    }
+
     private void isWin() {
         // TODO Auto-generated method stub
 
@@ -108,98 +111,97 @@ public class GameView {
     private void stopGame() {
         // TODO Auto-generated method stub
         timer.cancel();
-        if(menang) {
+        if (menang) {
             try {
                 setScore();
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             showBomb();
         }
 
         backbtn.setVisible(true);
         againbtn.setVisible(true);
     }
+
     public Stage getMainStage() {
-		return mainStage;
-	}
-    
+        return mainStage;
+    }
+
     private Label timeCounter(int x, int y) {
-    	time = 0.0;
-    	Labels counter = new Labels(String.valueOf(df.format(time)));
-    	counter.setLayoutX(x);
-    	counter.setLayoutY(y);
-    	
-		timer = new Timer();
-    	timer.schedule(new TimerTask() {
-			  @Override
-			  public void run() {
-			    time+=0.01;
-			    Platform.runLater(new Runnable(){
-					@Override
-					public void run() {
-						counter.setText(String.valueOf(df.format(time)));
-					}
-			    });
-			  }
-			}, 0, 10);
-    	return counter;
+        time = 0.0;
+        Labels counter = new Labels(String.valueOf(df.format(time)));
+        counter.setLayoutX(x);
+        counter.setLayoutY(y);
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                time += 0.01;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        counter.setText(String.valueOf(df.format(time)));
+                    }
+                });
+            }
+        }, 0, 10);
+        return counter;
     }
-    
+
     private Buttons backButton(int x, int y) {
-    	Buttons back = new Buttons("HOME");
-    	back.setLayoutX(x);
-    	back.setLayoutY(y);
-    	back.setOnAction(new EventHandler<ActionEvent>() {
+        Buttons back = new Buttons("HOME");
+        back.setLayoutX(x);
+        back.setLayoutY(y);
+        back.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
-			public void handle(ActionEvent event) {
-				mainStage.close();
-				home.show();
-			}
-			
-		});
-    	back.setVisible(false);
-    	return back;
+            @Override
+            public void handle(ActionEvent event) {
+                mainStage.close();
+                home.show();
+            }
+
+        });
+        back.setVisible(false);
+        return back;
     }
-    
+
     private Buttons againButton(int x, int y) {
-    	Buttons back = new Buttons("PLAY AGAIN");
-    	back.setLayoutX(x);
-    	back.setLayoutY(y);
-    	back.setOnAction(new EventHandler<ActionEvent>() {
+        Buttons back = new Buttons("PLAY AGAIN");
+        back.setLayoutX(x);
+        back.setLayoutY(y);
+        back.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
-			public void handle(ActionEvent event) {
-				scene.setRoot(createContent());
-			}
-			
-		});
-    	back.setVisible(false);
-    	return back;
+            @Override
+            public void handle(ActionEvent event) {
+                scene.setRoot(createContent());
+            }
+
+        });
+        back.setVisible(false);
+        return back;
     }
-    
+
     private void createImage() {
-    	for(int i = 0; i < 13; i++)
-        {
-            card.add(new Image("/resource/"+i+".png"));
+        for (int i = 0; i < 13; i++) {
+            card.add(new Image("/resource/" + i + ".png"));
         }
     }
-    
-    private Parent createContent() {  
-    	win = 0;
+
+    private Parent createContent() {
+        win = 0;
         winCount = 0;
         bombCount = 0;
         menang = false;
-    	root = new AnchorPane();
-        root.setPrefSize(W+200, H);
+        root = new AnchorPane();
+        root.setPrefSize(W + 200, H);
 
         for (int y = 0; y < Y_TILES; y++) {//membuat isi angka
             for (int x = 0; x < X_TILES; x++) {
-                Tile tile = new Tile(x, y, Math.random() < 0.0);
+                Tile tile = new Tile(x, y, Math.random() < 0.125);
 
                 grid[x][y] = tile;
                 root.getChildren().add(tile);
@@ -210,16 +212,19 @@ public class GameView {
             for (int x = 0; x < X_TILES; x++) {
                 Tile tile = grid[x][y];
 
-                if (tile.hasBomb)
+                if (tile.hasBomb) {
                     continue;
+                }
 
                 long bombs = getNeighbors(tile).stream().filter(t -> t.hasBomb).count();
 
                 if (bombs > 0)//utnuk skip
+                {
                     tile.text.setText(String.valueOf(bombs));
+                }
             }
         }
-        
+
         labelInfo waktu = new labelInfo("TIME");
         labelInfo flag = new labelInfo("FLAG");
         root.getChildren().add(timeCounter(W + 35, 100));
@@ -234,7 +239,7 @@ public class GameView {
         root.getChildren().add(flag);
         root.getChildren().add(waktu);
 
-    	createButtons();
+        createButtons();
 
         return root;
     }
@@ -246,15 +251,15 @@ public class GameView {
         // tXt
         // ttt
 
-        int[] points = new int[] {
-              -1, -1,
-              -1, 0,
-              -1, 1,
-              0, -1,
-              0, 1,
-              1, -1,
-              1, 0,
-              1, 1
+        int[] points = new int[]{
+                -1, -1,
+                -1, 0,
+                -1, 1,
+                0, -1,
+                0, 1,
+                1, -1,
+                1, 0,
+                1, 1
         };
 
         for (int i = 0; i < points.length; i++) {
@@ -272,26 +277,25 @@ public class GameView {
 
         return neighbors;
     }
-    
+
     private class Tile extends StackPane {//kelas untuk emngatur kotak
         private int x, y;
         private boolean hasBomb;
         private boolean isOpen = false;
         private boolean isFlag = false;
-        private ImageView imgTile= new ImageView(card.get(10));
+        private ImageView imgTile = new ImageView(card.get(10));
         private Text text = new Text();
 
         public Tile(int x, int y, boolean hasBomb) {
             this.x = x;
             this.y = y;
             this.hasBomb = hasBomb;
-            
-            if(this.hasBomb) {
-            	bombCount++;
+
+            if (this.hasBomb) {
+                bombCount++;
+            } else {
+                win++;
             }
-	    else{
-		 win++;
-	    }
 
             text.setFont(Font.font(18));
             text.setText(hasBomb ? "X" : "");
@@ -299,32 +303,33 @@ public class GameView {
             imgTile.setFitHeight(TILE_SIZE);
             imgTile.setFitWidth(TILE_SIZE);
             getChildren().addAll(imgTile, text);
-	
+
             setTranslateX(x * TILE_SIZE);
             setTranslateY(y * TILE_SIZE);
 
             setOnMouseClicked(e -> {
-                if(e.getButton()==MouseButton.PRIMARY) {
-                	open();
-                }else if(e.getButton()==MouseButton.SECONDARY) {
-                	putFlag();
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    open();
+                } else if (e.getButton() == MouseButton.SECONDARY) {
+                    putFlag();
                 }
-        	
+
             });
         }
-        
+
         public void isbomb() {
-        	if (hasBomb) {        		
-        		imgTile.setImage(card.get(9));
-        	}else if (isFlag) {
+            if (hasBomb) {
+                imgTile.setImage(card.get(9));
+            } else if (isFlag) {
                 imgTile.setImage(card.get(12));
-            	}
-        	setOnMouseClicked(null);
+            }
+            setOnMouseClicked(null);
         }
 
         public void open() {
-            if (isOpen)
+            if (isOpen) {
                 return;
+            }
 
             if (hasBomb) {//melakukan reset game
                 System.out.println("Game Over");
@@ -335,83 +340,92 @@ public class GameView {
 
             isOpen = true;
             imgTile.setImage(card.get(0));
-	    if(!text.getText().isEmpty()) {
-            	if(Integer.valueOf(text.getText()) == 1) imgTile.setImage(card.get(1));
-                else if(Integer.valueOf(text.getText()) == 2) imgTile.setImage(card.get(2));
-                else if(Integer.valueOf(text.getText()) == 3) imgTile.setImage(card.get(3));
-                else if(Integer.valueOf(text.getText()) == 4) imgTile.setImage(card.get(4));
-                else if(Integer.valueOf(text.getText()) == 5) imgTile.setImage(card.get(5));
-                else if(Integer.valueOf(text.getText()) == 6) imgTile.setImage(card.get(6));
-                else if(Integer.valueOf(text.getText()) == 7) imgTile.setImage(card.get(7));
-                else if(Integer.valueOf(text.getText()) == 8) imgTile.setImage(card.get(8));
+            if (!text.getText().isEmpty()) {
+                if (Integer.valueOf(text.getText()) == 1) {
+                    imgTile.setImage(card.get(1));
+                } else if (Integer.valueOf(text.getText()) == 2) {
+                    imgTile.setImage(card.get(2));
+                } else if (Integer.valueOf(text.getText()) == 3) {
+                    imgTile.setImage(card.get(3));
+                } else if (Integer.valueOf(text.getText()) == 4) {
+                    imgTile.setImage(card.get(4));
+                } else if (Integer.valueOf(text.getText()) == 5) {
+                    imgTile.setImage(card.get(5));
+                } else if (Integer.valueOf(text.getText()) == 6) {
+                    imgTile.setImage(card.get(6));
+                } else if (Integer.valueOf(text.getText()) == 7) {
+                    imgTile.setImage(card.get(7));
+                } else if (Integer.valueOf(text.getText()) == 8) {
+                    imgTile.setImage(card.get(8));
+                }
             }
-	    winCount++;
+            winCount++;
             isWin();
             if (text.getText().isEmpty()) {//untuk membuka sekitarnya jika kosong isinya
                 getNeighbors(this).forEach(Tile::open);
             }
         }
-        
+
         private void putFlag() {
-        	if(isFlag) {
-        		isFlag = false;
-            	bombCount++;
-    			bomb.setText(String.valueOf(bombCount));
-				imgTile.setImage(card.get(10));
-            	setOnMouseClicked(e -> {
-            		if(e.getButton()==MouseButton.PRIMARY) {
- 	                	open();
- 	                }else if(e.getButton()==MouseButton.SECONDARY) {
- 	                	putFlag();
- 	                }
-             	
-            	});
-            	
-        	}
-        	else {
-        		if(bombCount > 0) {
-        			isFlag = true;
-        			bombCount--;
-					bomb.setText(String.valueOf(bombCount));
-					imgTile.setImage(card.get(11));
-        			setOnMouseClicked(e -> {
-     	                if(e.getButton()==MouseButton.PRIMARY) {
-     	                	e.consume();
-     	                }else if(e.getButton()==MouseButton.SECONDARY) {
-     	                	putFlag();
-     	                }
-                 	
-        			});
-        		}
-        	}
-    	}
+            if (isFlag) {
+                isFlag = false;
+                bombCount++;
+                bomb.setText(String.valueOf(bombCount));
+                imgTile.setImage(card.get(10));
+                setOnMouseClicked(e -> {
+                    if (e.getButton() == MouseButton.PRIMARY) {
+                        open();
+                    } else if (e.getButton() == MouseButton.SECONDARY) {
+                        putFlag();
+                    }
+
+                });
+
+            } else {
+                if (bombCount > 0 && !isOpen) {
+                    isFlag = true;
+                    bombCount--;
+                    bomb.setText(String.valueOf(bombCount));
+                    imgTile.setImage(card.get(11));
+                    setOnMouseClicked(e -> {
+                        if (e.getButton() == MouseButton.PRIMARY) {
+                            e.consume();
+                        } else if (e.getButton() == MouseButton.SECONDARY) {
+                            putFlag();
+                        }
+
+                    });
+                }
+            }
+        }
     }
-    
+
     private void showBomb() {
 
         for (int y = 0; y < Y_TILES; y++) {
             for (int x = 0; x < X_TILES; x++) {
-            	grid[x][y].isbomb();
+                grid[x][y].isbomb();
             }
         }
     }
-    private void setScore() throws FileNotFoundException{
+
+    private void setScore() throws FileNotFoundException {
         // TODO Auto-generated method stub
         scan = new Scanner(new File(dif));
         double temp;
-        while(scan.hasNextLine()) {
+        while (scan.hasNextLine()) {
             temp = Double.parseDouble(scan.nextLine());
             EZhs.add(temp);
         }
 
         EZhs.add(time);
         Collections.sort(EZhs);
-        EZhs.remove(EZhs.size()-1);
+        EZhs.remove(EZhs.size() - 1);
 
         try {
             info = new BufferedWriter(new FileWriter(dif, false));
 
-            for(int i=0;i<5;i++) {
+            for (int i = 0; i < 5; i++) {
                 info.write(String.valueOf(df.format(EZhs.get(i))));
                 info.newLine();
             }
