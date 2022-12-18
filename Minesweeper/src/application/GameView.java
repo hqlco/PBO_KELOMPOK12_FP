@@ -16,7 +16,9 @@ import javafx.stage.Stage;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.scene.control.Label;
-
+import javafx.application.Platform;
+import asset.Labels;
+import java.text.DecimalFormat;
 
 public class GameView {
 
