@@ -80,7 +80,7 @@ public class GameView {
         // TODO Auto-generated method stub
 
         if (win == winCount) {
-            labelInfo winText = new labelInfo("YOU WIN");
+            Label winText = new Label("YOU WIN");
             winText.setLayoutX(W + 35);
             winText.setLayoutY(430);
             root.getChildren().add(winText);
@@ -101,12 +101,7 @@ public class GameView {
         // TODO Auto-generated method stub
         timer.cancel();
         if (menang) {
-            try {
-                setScore();
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            setScore();
         } else {
             showBomb();
         }
@@ -375,7 +370,7 @@ public class GameView {
             }
         }
     }
-    private void setScore() throws FileNotFoundException {
+    private void setScore() {
         // TODO Auto-generated method stub
         
         Label textToSet = new Label("SCORE : " + String.valueOf(df.format(time)));
