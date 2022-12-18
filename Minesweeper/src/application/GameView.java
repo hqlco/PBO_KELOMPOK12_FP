@@ -234,9 +234,6 @@ public class GameView {
         	if (hasBomb) {        		
         		imgTile.setImage(card.get(9));
         	}
-        	else if(isFlag) {
-        		imgTile.setImage(card.get(12));
-        	}
         	setOnMouseClicked(null);
         }
 
