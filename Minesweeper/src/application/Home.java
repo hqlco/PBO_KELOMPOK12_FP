@@ -1,7 +1,12 @@
 package application;
 
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
 import asset.Buttons;
 import asset.label;
 import asset.msSubscene;
@@ -13,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
 
 public class Home {
 	private AnchorPane homePane;
@@ -25,6 +31,11 @@ public class Home {
 	private final static int MENU_BUTTON_START_Y = 225;
 	private final static int MENU_SCORE_START_X = 170;
 	private msSubscene scoreSubscene,startSubscene;
+
+	Scanner scan;
+	Label easyHS = new Label();
+	Label mediumHS = new Label();
+	Label hardHS = new Label();
 	
 	public Home() {
 		menuButtons = new ArrayList<>();
@@ -35,6 +46,7 @@ public class Home {
 		CreateButtons();
 		createLogo();
 		createSubScenes();
+		homeStage.setOnShowing(e -> updateScore());
 	}
 	
 	public Stage getMainStage() {
@@ -69,6 +81,18 @@ public class Home {
 		label Judul = new label("HIGH SCORE");
 		Judul.setLayoutX(110);
 		Judul.setLayoutY(25);
+		easyHS.setLayoutX(100);
+		easyHS.setLayoutY(100);
+
+		mediumHS.setLayoutX(200);
+		mediumHS.setLayoutY(100);
+
+		hardHS.setLayoutX(300);
+		hardHS.setLayoutY(100);
+
+		scoreSubscene.getPane().getChildren().add(easyHS);
+		scoreSubscene.getPane().getChildren().add(mediumHS);
+		scoreSubscene.getPane().getChildren().add(hardHS);
 		scoreSubscene.getPane().getChildren().add(Judul);
 		scoreSubscene.getPane().getChildren().add(creatBackButton(scoreSubscene));
 	}
@@ -97,7 +121,7 @@ public class Home {
 
 			@Override
 			public void handle(ActionEvent event) {
-				new GameView(homeStage, size);
+				new GameView(homeStage, size, label.toLowerCase());
 				startSubscene.moveSubScene();
 			}
 			
@@ -184,5 +208,39 @@ public class Home {
 		});
 		
 		homePane.getChildren().add(logo);	
+	}
+
+	public void updateScore() {
+
+		String textToSet;
+
+		try {
+			textToSet = "EASY\n";
+			scan = new Scanner(new File("./Minesweeper/src/resource/easyHS.txt"));
+			while(scan.hasNextLine()) {
+				textToSet += scan.nextLine() + "\n";
+			}
+			easyHS.setText(textToSet);
+			scan.close();
+
+			textToSet = "MEDIUM\n";
+			scan = new Scanner(new File("./Minesweeper/src/resource/mediumHS.txt"));
+			while(scan.hasNextLine()) {
+				textToSet += scan.nextLine() + "\n";
+			}
+			mediumHS.setText(textToSet);
+			scan.close();
+
+			textToSet = "HARD\n";
+			scan = new Scanner(new File("./Minesweeper/src/resource/hardHS.txt"));
+			while(scan.hasNextLine()) {
+				textToSet += scan.nextLine() + "\n";
+			}
+			hardHS.setText(textToSet);
+			scan.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

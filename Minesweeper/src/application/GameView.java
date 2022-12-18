@@ -1,8 +1,8 @@
 
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,8 +15,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.scene.control.Label;
 import javafx.application.Platform;
 import asset.Labels;
@@ -29,7 +27,9 @@ import javafx.scene.layout.AnchorPane;
 
 public class GameView {
 
-	private static int TILE_SIZE;
+    private String dif = "./Minesweeper/src/resource/";
+
+    private static int TILE_SIZE;
     private static final int W = 800;
     private static final int H = 600;
     private Stage mainStage;
@@ -40,6 +40,9 @@ public class GameView {
     private Stage home;
     private Tile[][] grid;
     List<Image> card = new ArrayList<>();
+
+    List<Double> EZhs = new ArrayList<>();
+
     private double time;
 	Timer timer;
 	private static final DecimalFormat df = new DecimalFormat("0.00");
@@ -51,8 +54,12 @@ public class GameView {
     private int winCount;
     private boolean menang;
 
+    Scanner scan;
+    BufferedWriter info;
+
     
-    public GameView(Stage home, int size) {
+    public GameView(Stage home, int size, String dif) {
+        this.dif = this.dif + dif + "HS.txt";
         TILE_SIZE = size;
         createImage();
         X_TILES = W / TILE_SIZE;
@@ -100,9 +107,15 @@ public class GameView {
     private void stopGame() {
         // TODO Auto-generated method stub
         timer.cancel();
-        if (menang) {
-            setScore();
-        } else {
+        if(menang) {
+            try {
+                setScore();
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else {
             showBomb();
         }
 
@@ -185,7 +198,7 @@ public class GameView {
 
         for (int y = 0; y < Y_TILES; y++) {//membuat isi angka
             for (int x = 0; x < X_TILES; x++) {
-                Tile tile = new Tile(x, y, Math.random() < 0.125);
+                Tile tile = new Tile(x, y, Math.random() < 0.0);
 
                 grid[x][y] = tile;
                 root.getChildren().add(tile);
@@ -370,13 +383,36 @@ public class GameView {
             }
         }
     }
-    private void setScore() {
+    private void setScore() throws FileNotFoundException{
         // TODO Auto-generated method stub
-        
+        scan = new Scanner(new File(dif));
+        double temp;
+        while(scan.hasNextLine()) {
+            temp = Double.parseDouble(scan.nextLine());
+            EZhs.add(temp);
+        }
+
+        EZhs.add(time);
+        Collections.sort(EZhs);
+        EZhs.remove(EZhs.size()-1);
+
+        try {
+            info = new BufferedWriter(new FileWriter(dif, false));
+
+            for(int i=0;i<5;i++) {
+                info.write(String.valueOf(df.format(EZhs.get(i))));
+                info.newLine();
+            }
+            info.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         Label textToSet = new Label("SCORE : " + String.valueOf(df.format(time)));
         textToSet.setPrefWidth(170);
         textToSet.setLayoutX(W + 100);
         textToSet.setLayoutY(200);
         root.getChildren().add(textToSet);
+        scan.close();
     }
 }
