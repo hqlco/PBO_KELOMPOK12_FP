@@ -227,7 +227,7 @@ public class GameView {
         waktu.setLayoutY(60);
         flag.setLayoutX(W + 35);
         flag.setLayoutY(160);
-        bomb = new labels(String.valueOf(bombCount));
+        bomb = new Labels(String.valueOf(bombCount));
         bomb.setLayoutX(W + 35);
         bomb.setLayoutY(200);
         root.getChildren().add(bomb);
