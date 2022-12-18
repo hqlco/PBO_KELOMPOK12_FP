@@ -41,7 +41,7 @@ public class GameView {
     
     public GameView(Stage menu, int size) {
         TILE_SIZE = size;
-	createImage()
+	createImage();
         X_TILES = W / TILE_SIZE;
         Y_TILES = H / TILE_SIZE;
         grid = new Tile[X_TILES][Y_TILES];
@@ -160,8 +160,6 @@ public class GameView {
             this.x = x;
             this.y = y;
             this.hasBomb = hasBomb;
-
-            border.setStroke(Color.LIGHTGRAY);
 
             text.setFont(Font.font(18));
             text.setText(hasBomb ? "X" : "");
