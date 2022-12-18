@@ -1,4 +1,3 @@
-
 package application;
 
 import java.io.*;
@@ -6,6 +5,7 @@ import java.util.*;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -309,18 +309,54 @@ public class GameView {
 
             setOnMouseClicked(e -> {
                 if (e.getButton() == MouseButton.PRIMARY) {
-                    open();
+                    if(!isOpen){
+                        open();
+                    }else{
+                        if (!text.getText().isEmpty()) {
+                            List<Tile> neighbors = getNeighbors(this);
+                            for (Tile neighbor : neighbors) {
+                                if (neighbor.isFlag) {
+                                    for (Tile t : neighbors) {
+                                        if(!isFlag){
+                                            t.open();
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 } else if (e.getButton() == MouseButton.SECONDARY) {
                     putFlag();
                 }
 
             });
+            setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton().equals(MouseButton.PRIMARY)) {
+                        if (!isOpen && !isFlag) {
+                            imgTile.setImage(card.get(0));
+                        }
+                    }
+                }
+            });
+            setOnMouseReleased(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton().equals(MouseButton.PRIMARY)) {
+                        if (!isOpen && !isFlag) {
+                            imgTile.setImage(card.get(10));
+                        }
+                    }
+                }
+            });
         }
 
         public void isbomb() {
-            if (hasBomb) {
-                imgTile.setImage(card.get(9));
-            } else if (isFlag) {
+            if (!isFlag) {
+                showTile();
+            } else if (isFlag && !hasBomb) {
                 imgTile.setImage(card.get(12));
             }
             setOnMouseClicked(null);
@@ -331,16 +367,31 @@ public class GameView {
                 return;
             }
 
-            if (hasBomb) {//melakukan reset game
-                System.out.println("Game Over");
-                menang = false;
-                stopGame();
-                return;
-            }
+            if (!isFlag) {
+                if (hasBomb) {//melakukan reset game
+                    System.out.println("Game Over");
+                    menang = false;
+                    stopGame();
+                    return;
+                }
 
-            isOpen = true;
+
+                isOpen = true;
+                showTile();
+                winCount++;
+                isWin();
+            }
+            if (text.getText().isEmpty()) {//untuk membuka sekitarnya jika kosong isinya
+                getNeighbors(this).forEach(Tile::open);
+            }
+        }
+
+        public void showTile(){
             imgTile.setImage(card.get(0));
-            if (!text.getText().isEmpty()) {
+            if(hasBomb){
+                imgTile.setImage(card.get(9));
+            }
+            else if (!text.getText().isEmpty()) {
                 if (Integer.valueOf(text.getText()) == 1) {
                     imgTile.setImage(card.get(1));
                 } else if (Integer.valueOf(text.getText()) == 2) {
@@ -358,11 +409,6 @@ public class GameView {
                 } else if (Integer.valueOf(text.getText()) == 8) {
                     imgTile.setImage(card.get(8));
                 }
-            }
-            winCount++;
-            isWin();
-            if (text.getText().isEmpty()) {//untuk membuka sekitarnya jika kosong isinya
-                getNeighbors(this).forEach(Tile::open);
             }
         }
 
