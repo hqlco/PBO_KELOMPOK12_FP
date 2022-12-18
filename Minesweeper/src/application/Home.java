@@ -215,29 +215,32 @@ public class Home {
 		String textToSet;
 
 		try {
-			textToSet = "EASY\n";
-			scan = new Scanner(new File("./Minesweeper/src/resource/easyHS.txt"));
-			while(scan.hasNextLine()) {
-				textToSet += scan.nextLine() + "\n";
-			}
-			easyHS.setText(textToSet);
-			scan.close();
+		    textToSet = "EASY\n";
+		    scan = new Scanner(new File("./src/resource/easyHS.txt"));
+		    while (scan.hasNextLine()) {
+			textToSet += scan.nextLine() + "\n";
+		    }
+		    easyHS.setText(textToSet);
+		    easyHS.setFont(Font.font("Cambria", 15));
+		    scan.close();
 
-			textToSet = "MEDIUM\n";
-			scan = new Scanner(new File("./Minesweeper/src/resource/mediumHS.txt"));
-			while(scan.hasNextLine()) {
-				textToSet += scan.nextLine() + "\n";
-			}
-			mediumHS.setText(textToSet);
-			scan.close();
+		    textToSet = "MEDIUM\n";
+		    scan = new Scanner(new File("./src/resource/mediumHS.txt"));
+		    while (scan.hasNextLine()) {
+			textToSet += scan.nextLine() + "\n";
+		    }
+		    mediumHS.setText(textToSet);
+		    mediumHS.setFont(Font.font("Cambria", 15));
+		    scan.close();
 
-			textToSet = "HARD\n";
-			scan = new Scanner(new File("./Minesweeper/src/resource/hardHS.txt"));
-			while(scan.hasNextLine()) {
-				textToSet += scan.nextLine() + "\n";
-			}
-			hardHS.setText(textToSet);
-			scan.close();
+		    textToSet = "HARD\n";
+		    scan = new Scanner(new File("./src/resource/hardHS.txt"));
+		    while (scan.hasNextLine()) {
+			textToSet += scan.nextLine() + "\n";
+		    }
+		    hardHS.setText(textToSet);
+		    hardHS.setFont(Font.font("Cambria", 15));
+		    scan.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
